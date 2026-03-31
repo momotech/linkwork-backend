@@ -9,6 +9,7 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -21,10 +22,10 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * K8s 集群监控 Service — 多命名空间、全量资源查看
- * 复用现有 KubernetesClient Bean
+ * K8s 集群监控 Service — 仅在 sandbox.provider = k8s-volcano 时加载
  */
 @Service
+@ConditionalOnProperty(name = "linkwork.agent.sandbox.provider", havingValue = "k8s-volcano")
 @Slf4j
 @RequiredArgsConstructor
 public class K8sClusterService {

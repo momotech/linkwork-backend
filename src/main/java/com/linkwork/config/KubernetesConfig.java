@@ -4,6 +4,7 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,8 +14,10 @@ import java.nio.file.Path;
 
 /**
  * Kubernetes 客户端配置
+ * 仅在 sandbox.provider = k8s-volcano 时加载
  */
 @Configuration
+@ConditionalOnProperty(name = "linkwork.agent.sandbox.provider", havingValue = "k8s-volcano")
 @Slf4j
 public class KubernetesConfig {
     
