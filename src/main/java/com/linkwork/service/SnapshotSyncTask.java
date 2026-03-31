@@ -6,6 +6,7 @@ import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -13,14 +14,10 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Snapshot 与 K8s 状态定期同步任务
- * 
- * 包含两个方向的同步：
- * 1. 正向同步：已有 Snapshot → 从 K8s 校验/更新 Pod 状态
- * 2. 反向发现：扫描 K8s 中运行的服务 → 为缺失 Snapshot 的服务自动重建
- *    （解决后端重启后 Snapshot 丢失导致 scale-down/stop 等操作失败的问题）
+ * Snapshot 与 K8s 状态定期同步任务 — 仅在 sandbox.provider = k8s-volcano 时加载
  */
 @Component
+@ConditionalOnProperty(name = "linkwork.agent.sandbox.provider", havingValue = "k8s-volcano")
 @Slf4j
 public class SnapshotSyncTask {
     

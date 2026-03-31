@@ -8,6 +8,7 @@ import com.linkwork.service.K8sClusterService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
@@ -15,12 +16,12 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * K8s 集群监控 API
- * 仅允许配置的 workId 用户访问
+ * K8s 集群监控 API — 仅在 k8s-volcano 模式下启用
  */
 @Slf4j
 @RestController
 @RequestMapping("/api/v1/k8s-monitor")
+@ConditionalOnProperty(name = "linkwork.agent.sandbox.provider", havingValue = "k8s-volcano")
 @RequiredArgsConstructor
 public class K8sClusterController {
 

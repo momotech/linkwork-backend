@@ -7,6 +7,7 @@ import com.linkwork.agent.skill.core.model.FileNode;
 import com.linkwork.agent.skill.core.model.SkillInfo;
 import com.linkwork.common.ResourceNotFoundException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -18,13 +19,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Skill Git provider adapter.
- *
- * 使用 linkwork-skill-starter 的 SkillClient 覆盖替换原有直连 GitLab RestTemplate 实现，
- * 对上层 SkillService 继续提供原有 Map/List<Map> 兼容接口。
+ * Skill Git provider adapter — 仅在 skill 启用时加载
  */
 @Slf4j
 @Service
+@ConditionalOnProperty(name = "linkwork.agent.skill.enabled", havingValue = "true", matchIfMissing = true)
 public class SkillGitLabService {
 
     private final SkillClient skillClient;

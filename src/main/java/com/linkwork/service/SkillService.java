@@ -8,6 +8,8 @@ import com.linkwork.common.ResourceNotFoundException;
 import com.linkwork.mapper.SkillMapper;
 import com.linkwork.model.entity.SkillEntity;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -24,10 +26,12 @@ import java.util.stream.Collectors;
 public class SkillService extends ServiceImpl<SkillMapper, SkillEntity> {
 
     private static final Set<String> SUPPORTED_SKILL_STATUSES = Set.of("draft", "ready", "disabled");
+    @Nullable
     private final SkillGitLabService skillGitLabService;
     private final AdminAccessService adminAccessService;
 
-    public SkillService(SkillGitLabService skillGitLabService, AdminAccessService adminAccessService) {
+    public SkillService(@Autowired(required = false) @Nullable SkillGitLabService skillGitLabService,
+                        AdminAccessService adminAccessService) {
         this.skillGitLabService = skillGitLabService;
         this.adminAccessService = adminAccessService;
     }

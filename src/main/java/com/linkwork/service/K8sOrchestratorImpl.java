@@ -11,6 +11,7 @@ import io.fabric8.kubernetes.api.model.metrics.v1beta1.PodMetrics;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -27,9 +28,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * K8s 编排器实现
+ * K8s 编排器实现 — 仅在 sandbox.provider = k8s-volcano 时加载
  */
 @Service
+@ConditionalOnProperty(name = "linkwork.agent.sandbox.provider", havingValue = "k8s-volcano")
 @Slf4j
 public class K8sOrchestratorImpl implements K8sOrchestrator {
 
